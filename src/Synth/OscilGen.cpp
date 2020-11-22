@@ -502,14 +502,14 @@ void OscilGen::calculateWaveTableTensors(Tensor1<wavetable_types::float32>& freq
     // semantics
     if(fillWithZeroes)
     {
-        for(std::size_t i = 0; i < semantics.size(); ++i)
+        for(std::size_t i = 0; i < semantics.capacity(); ++i)
         {
             semantics[i].intVal = i; // do not consume any random
         }
     }
     else
     {
-        for(std::size_t i = 0; i < semantics.size(); ++i)
+        for(std::size_t i = 0; i < semantics.capacity(); ++i)
         {
             semantics[i].intVal = prng();
         }
@@ -517,7 +517,7 @@ void OscilGen::calculateWaveTableTensors(Tensor1<wavetable_types::float32>& freq
 
     // frequency
     freqs[0] = 55.f;
-    for(std::size_t i = 1; i < freqs.size(); ++i)
+    for(std::size_t i = 1; i < freqs.capacity(); ++i)
     {
         freqs[i] = 2.f * freqs[i-1];
     }
@@ -529,9 +529,9 @@ void OscilGen::calculateWaveTableTensors(Tensor1<wavetable_types::float32>& freq
     }
     else
     {
-        for(std::size_t i = 0; i < semantics.size(); ++i)
+        for(std::size_t i = 0; i < semantics.capacity(); ++i)
         {
-            for(std::size_t j = 0; j < freqs.size(); ++j)
+            for(std::size_t j = 0; j < freqs.capacity(); ++j)
             {
                 newrandseed(semantics[i].intVal);
                 get(data[i][j].data(), freqs[j], Presonance);
