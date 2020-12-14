@@ -495,7 +495,7 @@ public:
 
 void OscilGen::calculateWaveTableScales(Tensor1<wavetable_types::float32>& freqs,
     Tensor1<wavetable_types::IntOrFloat>& semantics,
-    bool fillWithZeroes)
+    bool fillWithZeroes) const
 {
     // semantics
     if(fillWithZeroes)
@@ -589,7 +589,7 @@ WaveTable *OscilGen::allocWaveTable() const
     return wt;
 }
 
-void OscilGen::recalculateDefaultWaveTable(WaveTable * wt, bool fillWithZeroes) /*const*/
+void OscilGen::recalculateDefaultWaveTable(WaveTable * wt, bool fillWithZeroes) const
 {
     wt->setMode(WaveTable::WtMode::freqseed_smps);
 
@@ -608,7 +608,9 @@ void OscilGen::recalculateDefaultWaveTable(WaveTable * wt, bool fillWithZeroes) 
         {
             // no FFT/IFFT required, it's a simple sine
             // (the currently selected base function is still sine)
-            getbasefunction(data[i][j].data());
+            for(int k = 0; k < synth.oscilsize; ++k) {
+                data[i][j][k] = -sinf(2.0f * PI * k / synth.oscilsize);
+            }
         }
     }
 
